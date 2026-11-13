@@ -1,27 +1,27 @@
 package com.dt2.petmania.controllers;
 
 import com.dt2.petmania.entities.Pet;
-import com.dt2.petmania.repositories.PetRepository;
+import com.dt2.petmania.service.PetService;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMaping
-@RestController("api/pets")
+@RestController
+@RequestMapping("/api/pets")
 public class PetController {
+    private final PetService petService;
 
-    private final PetRepository repository;
-    public PetController(PetRepository repository) {
-        this.repository = repository;
+    public PetController(PetService petService) {
+        this.petService = petService;
+    }
+
+    @GetMapping
+    public List<Pet> listar() {
+        return petService.listarPets();
     }
 
     @PostMapping
-    public List<Pet> mostrar(){
-        return repository.findById();
+    public Pet criar(@RequestBody Pet p) {
+        return petService.criarPet(p);
     }
-    @GetMapping
-    public void criar(@RequestBody Pet p){
-        repository.save(p);
-    }
-
-    //CRIE O DELETE
 }
